@@ -1,0 +1,50 @@
+<h1>REMAHO</h1>
+<h3>投稿詳細</h3>
+<div class="tweet">
+  <p><%= @post.name %></p>
+  <p><%= @post.place %></p>
+  <p><%= @post.about %></p>
+</div>
+<% if @user_can_edit %>
+  <%= link_to "編集する", edit_post_path(@post.id) %>
+  <%= button_to "削除する", post_path(@post.id), method: :delete %> 
+<% end %>
+<% if @sim_exists %>
+<div class="comment-wrapper">
+  <p>SIM情報</p>
+  <% @sims.each do |c| %>
+    <div class="siminfo">
+      <%= c.career %>
+      <br>
+      <%= c.review %>
+      <br>
+      <div class="star">
+        <% if c.star.present? %>
+          <% for i in 1..c.star do %>
+            ★
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>  
+<% elsif @user_can_edit %>
+  <%= form_with(model: [@post, @sim], local: true) do |f| %>
+    <p>通信キャリア</p>
+    <%= f.select :career, [["AU", "AU"], ["SoftBank", "SoftBank"], ["楽天", "楽天"]], include_blank: "選択して下さい" %>
+    <br>
+    <p>評価</p>
+    <%= f.text_area :review %>
+    <div class="star-field">
+      <%= f.collection_radio_buttons :star, [[5, '★'], [4, '★'], [3, '★'], [2, '★'], [1, '★']], :first, :last %>
+    </div>
+    <%= button_tag type: "submit" do %>
+      <i class="far fa-comments"></i> 登録する
+    <% end %>
+  <% end %>
+<% end %>
+</div>
+<% if @sim_exists && @user_can_edit%>
+<%= button_to "削除する", post_sim_path(@post, @sims.first.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
+<%= link_to "編集する", edit_post_sim_path(@post, @sims.first.id) %>
+<% end %>
+<%= link_to "Tweet一覧に戻る", posts_path %>

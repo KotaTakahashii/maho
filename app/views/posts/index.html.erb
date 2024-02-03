@@ -1,0 +1,15 @@
+<h1>自分の題名</h1>
+<h3>一覧ページ</h3>
+<%= link_to "新規投稿へ", new_post_path %>
+<div class="tweets-container">
+  <% @posts.each do |t| %>
+    <div class="tweet">
+      <%= t.name %>
+      <br>
+      <%= t.place %>
+      <br>
+      <%= t.about %>
+      <%= link_to "詳細へ", post_path(t.id) %>
+    </div>
+  <% end %>
+</div>
