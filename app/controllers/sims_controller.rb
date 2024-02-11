@@ -1,7 +1,7 @@
 class SimsController < ApplicationController
     def create
         post = Post.find(params[:post_id])
-        sim = post.sims.build(sim_params) #buildを使い、contentとtweet_idの二つを同時に代入
+        sim = post.sims.build(sim_params) #buildを使い、contentとpost_idの二つを同時に代入
         sim.user_id = current_user.id
         if sim.save
           flash[:success] = "SIM情報を登録しました"
